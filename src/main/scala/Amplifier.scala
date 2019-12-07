@@ -1,7 +1,7 @@
 
 
 class Amplifier(computer: IntCodeComputer, phase: Int) {
-
+  var terminates = false
   private var piped: Option[Amplifier] = None
 
   def pipeTo(r: Amplifier): Amplifier = {
@@ -20,8 +20,8 @@ class Amplifier(computer: IntCodeComputer, phase: Int) {
       computer.execute(phase +: in)
     } else computer.execute(in)
     result match {
-      case t@ Term(output) => piped.map(_.input(output)).getOrElse(t)
-      case c@ Continue(output) => piped.map(_.input(output)).getOrElse(c)
+      case t: Term if terminates => t //piped.map(_.input(output)).getOrElse(t)
+      case r => piped.map(_.input(r.output)).getOrElse(r)
     }
   }
 

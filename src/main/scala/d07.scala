@@ -1,7 +1,4 @@
-import d05.{Op, input}
 
-import scala.annotation.tailrec
-import scala.collection.mutable
 
 object d07 extends App {
 
@@ -12,10 +9,12 @@ object d07 extends App {
   def amps(phases: List[Int]) = {
     val xs = phases.map(new Amplifier(computer, _))
     xs.sliding(2).foreach { case List(l, r) => l.pipeTo(r) }
+    xs.last.pipeTo(xs.head)
+    xs.last.terminates = true
     xs
   }
 
-  List(0, 1, 2, 3, 4).permutations.map(amps).map(_.head.input(0))
+  List(5, 6, 7, 8, 9).permutations.map(amps).map(_.head.input(0))
     .map(_.answer)
     .toList
     .sorted
